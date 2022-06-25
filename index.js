@@ -16,10 +16,22 @@ async function run() {
     try {
         await client.connect();
 
-        console.log('DB CONNECTED');
+        const roomCollection = client.db("rental").collection("rooms");
+        const reviewCollection = client.db("rental").collection("reviews");
+
         app.get('/', (req, res) => {
             res.send(`Server is running on ${port}`)
         });
+
+        app.get('/rooms', async (req, res) => {
+            const rooms = await roomCollection.find({}).toArray();
+            res.send(rooms);
+        });
+
+        app.get('/reviews', async (req, res) => {
+            const reviews = await reviewCollection.find({}).toArray();
+            res.send(reviews);
+        })
 
     }
 
