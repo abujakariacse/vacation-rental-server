@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 5000;
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 const cors = require('cors');
 app.use(cors());
@@ -18,20 +18,45 @@ async function run() {
 
         const roomCollection = client.db("rental").collection("rooms");
         const reviewCollection = client.db("rental").collection("reviews");
+        const serviceCollection = client.db("rental").collection("services");
+        const blogCollection = client.db("rental").collection("blogs");
 
         app.get('/', (req, res) => {
             res.send(`Server is running on ${port}`)
         });
-
+        // get all rooms
         app.get('/rooms', async (req, res) => {
             const rooms = await roomCollection.find({}).toArray();
             res.send(rooms);
         });
 
+        // get all reviews
         app.get('/reviews', async (req, res) => {
             const reviews = await reviewCollection.find({}).toArray();
             res.send(reviews);
+        });
+
+        // get all service
+        app.get('/services', async (req, res) => {
+            const services = await serviceCollection.find({}).toArray();
+            res.send(services);
+        });
+
+        // get all blogs
+        app.get('/blogs', async (req, res) => {
+            const blogs = await blogCollection.find({}).toArray();
+            res.send(blogs);
+        });
+
+        // get room details
+        app.get('/room/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await roomCollection.findOne(query);
+            res.send(result);
+
         })
+
 
     }
 
