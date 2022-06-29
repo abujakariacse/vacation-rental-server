@@ -20,6 +20,7 @@ async function run() {
         const reviewCollection = client.db("rental").collection("reviews");
         const serviceCollection = client.db("rental").collection("services");
         const blogCollection = client.db("rental").collection("blogs");
+        const subscribeCollection = client.db("rental").collection("subscribed");
 
         app.get('/', (req, res) => {
             res.send(`Server is running on ${port}`)
@@ -55,6 +56,18 @@ async function run() {
             const result = await roomCollection.findOne(query);
             res.send(result);
 
+        });
+
+        app.post('/subscribe', async (req, res) => {
+            const email = req.query.email;
+            const exist = await subscribeCollection.findOne({ email });
+            if (!exist) {
+                const result = await subscribeCollection.insertOne({ email });
+                res.send(result)
+            }
+            else {
+                res.send({ message: 'Already Subscribed' })
+            }
         })
 
 
