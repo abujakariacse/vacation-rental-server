@@ -58,6 +58,7 @@ async function run() {
 
         });
 
+        // insert a email to subscribe collection
         app.post('/subscribe', async (req, res) => {
             const email = req.query.email;
             const exist = await subscribeCollection.findOne({ email });
@@ -68,6 +69,14 @@ async function run() {
             else {
                 res.send({ message: 'Already Subscribed' })
             }
+        });
+
+        // get specific blog detail 
+        app.get('/blogdetail/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await blogCollection.findOne(query);
+            res.send(result);
         })
 
 
