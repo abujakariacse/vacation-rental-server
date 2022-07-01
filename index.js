@@ -54,8 +54,7 @@ async function run() {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const result = await roomCollection.findOne(query);
-            res.send(result);
-
+            res.send(result)
         });
 
         // insert a email to subscribe collection
@@ -77,7 +76,8 @@ async function run() {
             const query = { _id: ObjectId(id) };
             const result = await blogCollection.findOne(query);
             res.send(result);
-        })
+        });
+
 
 
     }
