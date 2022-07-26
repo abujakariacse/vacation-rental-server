@@ -85,6 +85,21 @@ async function run() {
             const booking = req.body;
             const result = await bookingCollection.insertOne(booking);
             res.send(result);
+        });
+
+        // Get a user's bookings
+        app.get('/mybookings', async (req, res) => {
+            const email = req.query.email;
+            const bookings = await bookingCollection.find({ email }).toArray();
+            res.send(bookings);
+        });
+
+        // Delete a user's booking
+        app.delete('/mybooking/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await bookingCollection.deleteOne(query);
+            res.send(result)
         })
 
 
