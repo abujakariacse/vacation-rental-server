@@ -6,7 +6,8 @@ const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 const cors = require('cors');
 app.use(cors());
-require('dotenv').config()
+require('dotenv').config();
+app.use(express.json());
 
 // MongoDB URI
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.evyh5.mongodb.net/?retryWrites=true&w=majority`;
@@ -21,6 +22,7 @@ async function run() {
         const serviceCollection = client.db("rental").collection("services");
         const blogCollection = client.db("rental").collection("blogs");
         const subscribeCollection = client.db("rental").collection("subscribed");
+        const bookingCollection = client.db("rental").collection("bookings");
 
         app.get('/', (req, res) => {
             res.send(`Server is running on ${port}`)
@@ -77,6 +79,13 @@ async function run() {
             const result = await blogCollection.findOne(query);
             res.send(result);
         });
+
+        // insert a booking
+        app.post('/bookOne', async (req, res) => {
+            const booking = req.body;
+            const result = await bookingCollection.insertOne(booking);
+            res.send(result);
+        })
 
 
 
