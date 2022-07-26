@@ -100,6 +100,12 @@ async function run() {
             const query = { _id: ObjectId(id) };
             const result = await bookingCollection.deleteOne(query);
             res.send(result)
+        });
+
+        // Get all bookings
+        app.get('/allbookings', async (req, res) => {
+            const result = await bookingCollection.find({}).toArray();
+            res.send(result);
         })
 
 
