@@ -8,6 +8,7 @@ const cors = require('cors');
 app.use(cors());
 require('dotenv').config();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }))
 
 // MongoDB URI
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.evyh5.mongodb.net/?retryWrites=true&w=majority`;
@@ -106,7 +107,24 @@ async function run() {
         app.get('/allbookings', async (req, res) => {
             const result = await bookingCollection.find({}).toArray();
             res.send(result);
-        })
+        });
+
+        // Update booking status
+        app.put('/booking/update/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const updatedStatus = req.body;
+            const updateDoc = {
+                $set: {
+                    status: updatedStatus.status
+                }
+            };
+            const options = { upsert: true };
+            const result = await bookingCollection.updateOne(query, updateDoc, options);
+            res.send(result);
+
+        });
+
 
 
 
