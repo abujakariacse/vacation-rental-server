@@ -29,9 +29,10 @@ async function run() {
     const subscribeCollection = client.db("rental").collection("subscribed");
     const bookingCollection = client.db("rental").collection("bookings");
 
-    app.get("/", (req, res) => {
+    /*  app.get("/", (req, res) => {
       res.send(`Server is running on ${port}`);
-    });
+    }); */
+
     // get all rooms
     app.get("/rooms", async (req, res) => {
       const rooms = await roomCollection.find({}).toArray();
@@ -155,6 +156,9 @@ async function run() {
 }
 run().catch(console.dir);
 
+app.use("/", (req, res) => {
+  res.json({ message: "Server is running" });
+});
 app.listen(port, () => {
   console.log("Server is running on port " + port);
 });
