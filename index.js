@@ -32,6 +32,9 @@ async function run() {
     app.get("/", (req, res) => {
       res.send(`Server is running on ${port}`);
     });
+    app.use("/", (req, res) => {
+      res.json(`Server is running on ${port}`);
+    });
 
     // get all rooms
     app.get("/rooms", async (req, res) => {
