@@ -125,6 +125,21 @@ async function run() {
 
         });
 
+        // Update booking payment status
+        app.put('/booking/update/paymentStatus/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const updatedPayment = req.body;
+            const updatePayStatus = {
+                $set: {
+                    payment: updatedPayment.payment
+                }
+            };
+            const options = { upsert: true };
+            const result = await bookingCollection.updateOne(query, updatePayStatus, options);
+            res.send(result);
+        })
+
 
 
 
