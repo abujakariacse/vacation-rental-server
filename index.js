@@ -28,12 +28,10 @@ async function run() {
     const blogCollection = client.db("rental").collection("blogs");
     const subscribeCollection = client.db("rental").collection("subscribed");
     const bookingCollection = client.db("rental").collection("bookings");
+    const usersCollection = client.db("rental").collection("users");
 
-    /*  app.get("/", (req, res) => {
+    app.get("/", (req, res) => {
       res.send(`Server is running on ${port}`);
-    }); */
-    app.use("/", (req, res) => {
-      res.json({ message: "server is running" });
     });
 
     // get all rooms
@@ -77,6 +75,22 @@ async function run() {
         res.send(result);
       } else {
         res.send({ message: "Already Subscribed" });
+      }
+    });
+    // insert a user to user collection
+    app.post("/signup", async (req, res) => {
+      const userInfo = req.body;
+      const email = userInfo.email;
+      console.log(email);
+      const exist = await usersCollection.findOne({ email });
+      if (!exist) {
+        const result = await usersCollection.insertOne({
+          email: userInfo.email,
+          role: userInfo.role,
+        });
+        res.send(result);
+      } else {
+        res.send({ message: "Already have an account" });
       }
     });
 
