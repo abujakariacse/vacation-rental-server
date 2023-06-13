@@ -29,11 +29,11 @@ async function run() {
     const subscribeCollection = client.db("rental").collection("subscribed");
     const bookingCollection = client.db("rental").collection("bookings");
 
-    app.get("/", (req, res) => {
+    /*  app.get("/", (req, res) => {
       res.send(`Server is running on ${port}`);
-    });
+    }); */
     app.use("/", (req, res) => {
-      res.json(`Server is running on ${port}`);
+      res.json({ message: "server is running" });
     });
 
     // get all rooms
